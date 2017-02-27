@@ -17,11 +17,13 @@ class Handlers(object):
     def init_handlers(self):
         self.dispatcher.add_handler(self._new_member_handler)
 
-    def new_member(self, bot, update):
+    @staticmethod
+    def new_member(bot, update):
         welcome_text = """
-        Bienvenido al grupo Telegram de Seguridad Informática Venezuela: https://t.me/itsec_ve
+        {first_name} {last_name} ({username}), bienvenido(a) al grupo Telegram de Seguridad Informática Venezuela: https://t.me/itsec_ve
 
-        Compartimos ideas relacionadas con el amplio tema de la seguridad informática. Criptografía, privacidad, PenTest, exploits, ingeniería reversa, entre otros.
+        Compartimos ideas relacionadas con el tema de seguridad informática.
+        Criptografía, privacidad, PenTest, exploits, ingeniería reversa, entre otros.
 
         Algunos consejos y normas para empezar:
 
@@ -32,7 +34,11 @@ class Handlers(object):
         * No apoyamos el uso de estas herramientas y conocimientos para fines que estén por fuera del marco de la ley.
         * Este grupo está moderado, sé respetuoso y tolerante con los demás
         * "We are all consenting adults here"
-        """
+        """.format({
+            'first_name': update.message.new_chat_member.first_name,
+            'last_name': update.message.new_chat_member.last_name,
+            'username': update.message.new_chat_member.username
+        })
 
         bot.sendMessage(
             chat_id=update.message.chat_id,
